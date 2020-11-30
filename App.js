@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Navigator from './routes/drawer';
+import Navigator from './Client/routes/drawer';
 
 const App = () => {
   return <Navigator />;

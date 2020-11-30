@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ImageBackground,
-  Button,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const Header = ({navigation, title}) => {
   const openMenu = () => {
@@ -14,18 +8,12 @@ const Header = ({navigation, title}) => {
   };
 
   return (
-    <ImageBackground
-      source={require('../assets/game_bg.png')}
-      style={styles.header}>
-      <Button title="open" onPress={openMenu} style={styles.icon} />
+    <View style={styles.header}>
+      <Icon name="bars" size={30} onPress={openMenu} style={styles.icon}></Icon>
       <View style={styles.headerTitle}>
-        <Image
-          source={require('../assets/heart_logo.png')}
-          style={styles.headerImage}
-        />
         <Text style={styles.headerText}>{title}</Text>
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 
@@ -50,7 +38,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     flexDirection: 'row',
   },
-  headerImage: {width: 26, height: 26, marginHorizontal: 10},
 });
 
 export default Header;
