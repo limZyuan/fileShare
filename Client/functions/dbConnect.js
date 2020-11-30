@@ -6,7 +6,7 @@ export const getAllFiles = () => {
   // consider using ngrok for ios emulator.
   // have to change to own server next time
   return axios
-    .post('http://10.0.2.2:1337/files/getFiles')
+    .post('https://itiapinodejs.herokuapp.com/files/getFiles')
     .then((res) => {
       return res.data;
     })
