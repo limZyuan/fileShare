@@ -6,16 +6,26 @@ import FlatButton from '../shared/button';
 
 // file fetch
 import RNFetchBlob from 'rn-fetch-blob';
+import FileViewer from 'react-native-file-viewer';
 
 const ItineraryDetails = ({navigation}) => {
-  console.log(navigation.getParam('filename'), navigation.getParam('key'));
   // on modal update, fetch the respective file to load in viewer. File reader option is used to indicate whether the file is fetched for view or for download.
   useEffect(() => {
     if (navigation.getParam('filename')) {
       RNFetchBlob.config({
         fileCache: true,
-        // // by adding this option, the temp files will have a file extension
-        // appendExt: 'docx',
+        addAndroidDownloads: {
+          useDownloadManager: true, // <-- this is the only thing required
+          notification: true,
+          description: 'File downloaded by download manager.',
+          mediaScannable: true,
+          path:
+            RNFetchBlob.fs.dirs.DownloadDir +
+            '/' +
+            '3 days in Bali with family.docx',
+          mime:
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        },
       })
         .fetch(
           'GET',
@@ -24,6 +34,24 @@ const ItineraryDetails = ({navigation}) => {
         .then((res) => {
           // the temp file path
           console.log('The file saved to ', res.path());
+
+          RNFetchBlob.android.actionViewIntent(
+            res.path(),
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          );
+
+          // FileViewer.open(res.path(), {
+          //   showOpenWithDialog: true,
+          //   showAppsSuggestions: true,
+          // })
+          //   .then(() => {
+          //     // success
+          //     console.log('success');
+          //   })
+          //   .catch((error) => {
+          //     // error
+          //     console.log(error);
+          //   });
         });
     }
   }, [navigation]);
