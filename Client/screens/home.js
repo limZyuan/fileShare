@@ -1,21 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Modal,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 import {globalStyles} from '../styles/global';
 import Card from '../shared/card';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {getAllFiles} from '../functions/dbConnect';
 
 const Home = ({navigation}) => {
-  const [modalOpen, setModalOpen] = useState(false);
   const [itineraries, setItineraries] = useState([]);
 
   useEffect(() => {
@@ -48,24 +37,6 @@ const Home = ({navigation}) => {
 
   return (
     <View style={globalStyles.container}>
-      <Modal visible={modalOpen} animationType="slide">
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.modalContent}>
-            <Icon
-              name="close"
-              size={30}
-              onPress={() => setModalOpen(false)}
-              style={styles.modalClose}
-            />
-            <Text>Upload Itineraries</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-      <Icon
-        name="plus"
-        size={30}
-        onPress={() => setModalOpen(true)}
-        style={styles.modalTogger}></Icon>
       <FlatList
         data={itineraries}
         renderItem={({item}) => (
@@ -80,21 +51,5 @@ const Home = ({navigation}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  modalTogger: {
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#f2f2f2',
-    padding: 10,
-    borderRadius: 10,
-    alignSelf: 'center',
-  },
-  modalClose: {
-    marginTop: 20,
-    marginBottom: 0,
-  },
-  modalContent: {flex: 1},
-});
 
 export default Home;

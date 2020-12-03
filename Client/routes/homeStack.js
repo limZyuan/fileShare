@@ -13,7 +13,9 @@ const screens = {
     screen: Home,
     navigationOptions: ({navigation}) => {
       return {
-        headerTitle: () => <Header navigation={navigation} title="Aerodeous" />,
+        headerTitle: () => (
+          <Header navigation={navigation} title="Itineraries" />
+        ),
       };
     },
   },
