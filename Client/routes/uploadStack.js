@@ -1,5 +1,5 @@
 import {createStackNavigator} from 'react-navigation-stack';
-import About from '../screens/about';
+import Upload from '../screens/upload';
 import Header from '../shared/header';
 import React from 'react';
 
@@ -8,21 +8,21 @@ import React from 'react';
 // each screen will be automatically given the prop navigation by the library.
 // allows for navigation between screens.
 const screens = {
-  About: {
-    screen: About,
+  Upload: {
+    screen: Upload,
     navigationOptions: ({navigation}) => {
       return {
-        headerTitle: () => <Header navigation={navigation} title="About" />,
+        headerTitle: () => <Header navigation={navigation} title="Upload" />,
       };
     },
   },
 };
 
-const AboutStack = createStackNavigator(screens, {
+const UploadStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerTintColor: '#444',
     headerStyle: {backgroundColor: '#eee', height: 100},
   },
 });
 
-export default AboutStack;
+export default UploadStack;

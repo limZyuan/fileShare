@@ -2,12 +2,12 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {globalStyles} from '../styles/global';
 
-const About = () => {
+const Upload = () => {
   return (
     <View style={globalStyles.container}>
-      <Text>About Screen</Text>
+      <Text>Upload Screen</Text>
     </View>
   );
 };
 
-export default About;
+export default Upload;
