@@ -13,10 +13,9 @@ const uploadFunc = () => {
     type: [DocumentPicker.types.allFiles],
   })
     .then((res) => {
-      console.log(res);
       RNFetchBlob.fetch(
         'POST',
-        'http://10.0.2.2:3000/email/send',
+        'https://itiapinodejs.herokuapp.com/email/send',
         {
           'Content-Type': 'multipart/form-data',
         },
@@ -26,18 +25,19 @@ const uploadFunc = () => {
             name: 'file',
             filename: `${res.name}`,
             type: `${res.type}`,
-            data: `${res.uri}`,
+            data: `${RNFetchBlob.wrap(res.uri)}`,
           },
           // elements without property `filename` will be sent as plain text
           {name: 'autName', data: 'gg'},
           {name: 'autEmail', data: 'gg@gg.com'},
-          {name: 'itiName', data: 'hmmmm'},
+          {name: 'itiName', data: 'From the Phone and prod server'},
           {name: 'itiDes', data: 'bad'},
           {name: 'filename', data: `${res.name}`},
         ],
       )
         .then((res) => {
-          console.log(res, 'here');
+          console.log('file uploaded from phone');
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
