@@ -12,7 +12,9 @@ const screens = {
     screen: Upload,
     navigationOptions: ({navigation}) => {
       return {
-        headerTitle: () => <Header navigation={navigation} title="Upload" />,
+        headerTitle: () => (
+          <Header navigation={navigation} title="Upload Itinerary" />
+        ),
       };
     },
   },

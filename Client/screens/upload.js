@@ -1,5 +1,13 @@
 import React from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import {globalStyles} from '../styles/global';
 import RNFetchBlob from 'rn-fetch-blob';
 import FlatButton from '../shared/button';
@@ -11,17 +19,13 @@ import DocumentPicker from 'react-native-document-picker';
 
 // schema for form
 const UploadSchema = yup.object({
-  title: yup.string().required().min(4),
-  body: yup.string().required().min(8),
-  rating: yup
-    .string()
-    .required()
-    .test('is-num-1-5', 'Rating must be a number 1 - 5', (value) => {
-      return parseInt(value) < 6 && parseInt(value) > 0;
-    }),
+  name: yup.string().required().min(2),
+  email: yup.string().required().email(),
+  itiName: yup.string().required().min(3),
+  itiDes: yup.string().required().min(10),
 });
 
-const uploadFunc = () => {
+const uploadFunc = (values, resetForm) => {
   // Pick a single file
   DocumentPicker.pick({
     type: [DocumentPicker.types.allFiles],
@@ -42,19 +46,23 @@ const uploadFunc = () => {
             data: `${RNFetchBlob.wrap(res.uri)}`,
           },
           // elements without property `filename` will be sent as plain text
-          {name: 'autName', data: 'gg'},
-          {name: 'autEmail', data: 'gg@gg.com'},
-          {name: 'itiName', data: 'From the Phone and prod server'},
-          {name: 'itiDes', data: 'bad'},
+          {name: 'autName', data: values.name},
+          {name: 'autEmail', data: values.email},
+          {name: 'itiName', data: values.itiName},
+          {name: 'itiDes', data: values.itiDes},
           {name: 'filename', data: `${res.name}`},
         ],
       )
         .then((res) => {
-          console.log('file uploaded from phone');
-          console.log(res);
+          resetForm();
+          Alert.alert(
+            'Thank you for giving back to the community! 😍',
+            'Your itinerary has been send to the Travellist team for review.',
+            [{text: 'Close'}],
+          );
         })
         .catch((err) => {
-          console.log(err);
+          alert(err);
         });
     })
     .catch((err) => {
@@ -62,65 +70,79 @@ const uploadFunc = () => {
         // User cancelled the picker, exit any dialogs or menus and move on
         console.log('user cancelled');
       } else {
-        console.log(err);
+        alert(err);
       }
     });
 };
 
 const Upload = () => {
   return (
-    <View style={globalStyles.container}>
-      <Text>Upload Screen</Text>
-      <Formik
-        initialValues={{title: '', body: '', rating: ''}}
-        validationSchema={UploadSchema}
-        onSubmit={(values, actions) => {
-          console.log(values);
-        }}>
-        {(formikProps) => (
-          <View>
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Review Title"
-              onChangeText={formikProps.handleChange('title')}
-              value={formikProps.values.title}
-              onBlur={formikProps.handleBlur('title')}
-            />
-            <Text style={globalStyles.errorText}>
-              {formikProps.touched.title && formikProps.errors.title}
-            </Text>
-            <TextInput
-              multiline
-              style={globalStyles.input}
-              placeholder="Review body"
-              onChangeText={formikProps.handleChange('body')}
-              value={formikProps.values.body}
-              onBlur={formikProps.handleBlur('body')}
-            />
-            <Text style={globalStyles.errorText}>
-              {formikProps.touched.body && formikProps.errors.body}
-            </Text>
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Rating (1-5)"
-              onChangeText={formikProps.handleChange('rating')}
-              value={formikProps.values.rating}
-              keyboardType="numeric"
-              onBlur={formikProps.handleBlur('rating')}
-            />
-            <Text style={globalStyles.errorText}>
-              {formikProps.touched.rating && formikProps.errors.rating}
-            </Text>
-            <FlatButton text="submit" onPress={formikProps.handleSubmit} />
-          </View>
-        )}
-      </Formik>
-      <FlatButton
-        style={{marginTop: 16, backgroundColor: '#a5d1e3'}}
-        text="Upload"
-        onPress={() => uploadFunc()}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <ScrollView style={globalStyles.container}>
+        <Formik
+          initialValues={{name: '', email: '', itiName: '', itiDes: ''}}
+          validationSchema={UploadSchema}
+          onSubmit={(values, actions) => {
+            uploadFunc(values, actions.resetForm);
+          }}>
+          {(formikProps) => (
+            <View>
+              <Text>Name</Text>
+              <TextInput
+                style={globalStyles.input}
+                placeholder="What is my name?"
+                onChangeText={formikProps.handleChange('name')}
+                value={formikProps.values.name}
+                onBlur={formikProps.handleBlur('name')}
+              />
+              <Text style={globalStyles.errorText}>
+                {formikProps.touched.name && formikProps.errors.name}
+              </Text>
+              <Text>Email</Text>
+              <TextInput
+                style={globalStyles.input}
+                placeholder="What is my email?"
+                onChangeText={formikProps.handleChange('email')}
+                value={formikProps.values.email}
+                onBlur={formikProps.handleBlur('email')}
+                keyboardType="email-address"
+              />
+              <Text style={globalStyles.errorText}>
+                {formikProps.touched.email && formikProps.errors.email}
+              </Text>
+              <Text>Itinerary Name</Text>
+              <TextInput
+                style={globalStyles.input}
+                placeholder="What should I call my itinerary?"
+                onChangeText={formikProps.handleChange('itiName')}
+                value={formikProps.values.itiName}
+                onBlur={formikProps.handleBlur('itiName')}
+              />
+              <Text style={globalStyles.errorText}>
+                {formikProps.touched.itiName && formikProps.errors.itiName}
+              </Text>
+              <Text>Itinerary Description</Text>
+              <TextInput
+                placeholder="My itinerary is about..."
+                multiline
+                maxLength={300}
+                style={globalStyles.input}
+                onChangeText={formikProps.handleChange('itiDes')}
+                value={formikProps.values.itiDes}
+                onBlur={formikProps.handleBlur('itiDes')}
+              />
+              <Text style={globalStyles.errorText}>
+                {formikProps.touched.itiDes && formikProps.errors.itiDes}
+              </Text>
+              <FlatButton
+                text="Let's pick my itinerary!"
+                onPress={formikProps.handleSubmit}
+              />
+            </View>
+          )}
+        </Formik>
+      </ScrollView>
+    </TouchableWithoutFeedback>
   );
 };
 
