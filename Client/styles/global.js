@@ -17,7 +17,7 @@ export const globalStyles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
-    padding: 10,
+    padding: 12,
     fontSize: 18,
     borderRadius: 6,
   },
@@ -27,5 +27,15 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 6,
     marginTop: 6,
     textAlign: 'center',
+  },
+  searchBar: {
+    fontSize: 20,
+    paddingLeft: 10,
+    margin: 10,
+    width: '90%',
+    height: 50,
+    backgroundColor: 'transparent',
+    borderBottomColor: '#3a7c91',
+    borderBottomWidth: 2,
   },
 });

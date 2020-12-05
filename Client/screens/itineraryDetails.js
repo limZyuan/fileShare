@@ -1,16 +1,20 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import {globalStyles} from '../styles/global';
 import Card from '../shared/card';
 import FlatButton from '../shared/button';
+import ModalCustom from '../shared/modal';
 
 // file fetch
 import RNFetchBlob from 'rn-fetch-blob';
 import FileViewer from 'react-native-file-viewer';
 
 const ItineraryDetails = ({navigation}) => {
+  const [loading, setLoading] = useState(false);
+
   const openFile = () => {
     if (navigation.getParam('filename')) {
+      setLoading(true);
       RNFetchBlob.config({
         fileCache: true,
         path:
@@ -25,6 +29,7 @@ const ItineraryDetails = ({navigation}) => {
           )}&id=${navigation.getParam('key')}&fileReader=true`,
         )
         .then((res) => {
+          setLoading(false);
           FileViewer.open(res.path(), {
             showOpenWithDialog: true,
             showAppsSuggestions: true,
@@ -43,12 +48,17 @@ const ItineraryDetails = ({navigation}) => {
               // error
               alert(error);
             });
+        })
+        .catch((err) => {
+          alert(err);
+          setLoading(false);
         });
     }
   };
 
   const downloadFile = () => {
     if (navigation.getParam('filename')) {
+      setLoading(true);
       RNFetchBlob.config({
         fileCache: true,
         // android only options, these options be a no-op on IOS
@@ -69,16 +79,35 @@ const ItineraryDetails = ({navigation}) => {
             'filename',
           )}&id=${navigation.getParam('key')}&fileReader=true`,
         )
-        .then((res) => console.log('download success'))
-        .catch((err) => alert(err));
+        .then((res) => {
+          setLoading(false);
+          Alert.alert(
+            'We hope you enjoy the download! 😍',
+            'Do contribute back to the community by sharing your own itineraries!',
+            [{text: 'Close'}],
+          );
+        })
+        .catch((err) => {
+          alert(err);
+          setLoading(false);
+        });
     }
   };
 
   return (
     <View style={globalStyles.container}>
+      <ModalCustom
+        transparent={true}
+        visible={loading}
+        animationType={'none'}
+      />
       <Card>
         <Text style={globalStyles.paragraph}>
           <Text style={{fontWeight: 'bold'}}>Itinerary Name:</Text>{' '}
+          {navigation.getParam('itiName')}
+        </Text>
+        <Text style={globalStyles.paragraph}>
+          <Text style={{fontWeight: 'bold'}}>File Name:</Text>{' '}
           {navigation.getParam('filename')}
         </Text>
         <Text style={globalStyles.paragraph}>
@@ -95,7 +124,6 @@ const ItineraryDetails = ({navigation}) => {
         </Text>
         <View style={styles.bottom}>
           <Text>
-            {' '}
             <Text style={{fontWeight: 'bold'}}>Author:</Text>{' '}
             {navigation.getParam('author')}{' '}
           </Text>
