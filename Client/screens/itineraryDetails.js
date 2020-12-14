@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Alert} from 'react-native';
+import {View, Text, StyleSheet, Alert, PermissionsAndroid} from 'react-native';
 import {globalStyles} from '../styles/global';
 import Card from '../shared/card';
 import FlatButton from '../shared/button';
@@ -65,6 +65,7 @@ const ItineraryDetails = ({navigation}) => {
         addAndroidDownloads: {
           useDownloadManager: true,
           notification: true,
+          mediaScannable: true,
           title: `${navigation.getParam('filename')}`,
           mime: 'application/pdf',
           path:
@@ -92,6 +93,23 @@ const ItineraryDetails = ({navigation}) => {
           setLoading(false);
         });
     }
+  };
+
+  const downloadPermFile = () => {
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    )
+      .then((allow) => {
+        if (allow === 'granted') {
+          downloadFile();
+        } else {
+          Alert.alert(
+            'Permission Denied!',
+            'You need to give storage permission to download the file',
+          );
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -137,7 +155,7 @@ const ItineraryDetails = ({navigation}) => {
       <FlatButton
         style={{marginTop: 16, backgroundColor: '#3a7c91'}}
         text="Download"
-        onPress={() => downloadFile()}
+        onPress={() => downloadPermFile()}
       />
     </View>
   );

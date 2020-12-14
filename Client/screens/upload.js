@@ -21,8 +21,8 @@ import DocumentPicker from 'react-native-document-picker';
 const UploadSchema = yup.object({
   name: yup.string().required().min(2),
   email: yup.string().required().email(),
-  itiName: yup.string().required().min(3),
-  itiDes: yup.string().required().min(10),
+  itineraryName: yup.string().required().min(3),
+  itineraryDescription: yup.string().required().min(10),
 });
 
 const uploadFunc = (values, resetForm) => {
@@ -48,8 +48,8 @@ const uploadFunc = (values, resetForm) => {
           // elements without property `filename` will be sent as plain text
           {name: 'autName', data: values.name},
           {name: 'autEmail', data: values.email},
-          {name: 'itiName', data: values.itiName},
-          {name: 'itiDes', data: values.itiDes},
+          {name: 'itiName', data: values.itineraryName},
+          {name: 'itiDes', data: values.itineraryDescription},
           {name: 'filename', data: `${res.name}`},
         ],
       )
@@ -80,7 +80,12 @@ const Upload = () => {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ScrollView style={globalStyles.container}>
         <Formik
-          initialValues={{name: '', email: '', itiName: '', itiDes: ''}}
+          initialValues={{
+            name: '',
+            email: '',
+            itineraryName: '',
+            itineraryDescription: '',
+          }}
           validationSchema={UploadSchema}
           onSubmit={(values, actions) => {
             uploadFunc(values, actions.resetForm);
@@ -114,12 +119,13 @@ const Upload = () => {
               <TextInput
                 style={globalStyles.input}
                 placeholder="What should I call my itinerary?"
-                onChangeText={formikProps.handleChange('itiName')}
-                value={formikProps.values.itiName}
-                onBlur={formikProps.handleBlur('itiName')}
+                onChangeText={formikProps.handleChange('itineraryName')}
+                value={formikProps.values.itineraryName}
+                onBlur={formikProps.handleBlur('itineraryName')}
               />
               <Text style={globalStyles.errorText}>
-                {formikProps.touched.itiName && formikProps.errors.itiName}
+                {formikProps.touched.itineraryName &&
+                  formikProps.errors.itineraryName}
               </Text>
               <Text>Itinerary Description</Text>
               <TextInput
@@ -127,12 +133,13 @@ const Upload = () => {
                 multiline
                 maxLength={300}
                 style={globalStyles.input}
-                onChangeText={formikProps.handleChange('itiDes')}
-                value={formikProps.values.itiDes}
-                onBlur={formikProps.handleBlur('itiDes')}
+                onChangeText={formikProps.handleChange('itineraryDescription')}
+                value={formikProps.values.itineraryDescription}
+                onBlur={formikProps.handleBlur('itineraryDescription')}
               />
               <Text style={globalStyles.errorText}>
-                {formikProps.touched.itiDes && formikProps.errors.itiDes}
+                {formikProps.touched.itineraryDescription &&
+                  formikProps.errors.itineraryDescription}
               </Text>
               <FlatButton
                 text="Let's pick my itinerary!"

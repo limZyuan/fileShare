@@ -1,15 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import {StyleSheet, Text, View} from 'react-native';
 
 const Header = ({navigation, title}) => {
-  const openMenu = () => {
-    navigation.openDrawer();
-  };
-
   return (
     <View style={styles.header}>
-      <Icon name="bars" size={30} onPress={openMenu} style={styles.icon}></Icon>
       <View style={styles.headerTitle}>
         <Text style={styles.headerText}>{title}</Text>
       </View>

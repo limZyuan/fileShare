@@ -16,6 +16,7 @@ const screens = {
         headerTitle: () => (
           <Header navigation={navigation} title="Itineraries" />
         ),
+        // headerStyle: {height: 70},
       };
     },
   },
