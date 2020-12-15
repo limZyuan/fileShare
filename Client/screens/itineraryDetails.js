@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Alert, PermissionsAndroid} from 'react-native';
 import {globalStyles} from '../styles/global';
-import Card from '../shared/card';
+import ItiCard from '../shared/itineraryDetailsCard';
 import FlatButton from '../shared/button';
 import ModalCustom from '../shared/modal';
 
@@ -59,8 +59,10 @@ const ItineraryDetails = ({navigation}) => {
   const downloadFile = () => {
     if (navigation.getParam('filename')) {
       setLoading(true);
+
       RNFetchBlob.config({
         fileCache: true,
+        trusty: true,
         // android only options, these options be a no-op on IOS
         addAndroidDownloads: {
           useDownloadManager: true,
@@ -76,9 +78,12 @@ const ItineraryDetails = ({navigation}) => {
       })
         .fetch(
           'GET',
-          `https://itiapinodejs.herokuapp.com/files/download?file=${navigation.getParam(
-            'filename',
+          `https://itiapinodejs.herokuapp.com/files/download?file=${encodeURIComponent(
+            navigation.getParam('filename').toString().trim(),
           )}&id=${navigation.getParam('key')}&fileReader=true`,
+          {
+            Authorization: 'Bearer ' + 'af12500c-67ea-46d6-89ac-6a5c2a25c31d',
+          },
         )
         .then((res) => {
           setLoading(false);
@@ -89,7 +94,12 @@ const ItineraryDetails = ({navigation}) => {
           );
         })
         .catch((err) => {
-          alert(err);
+          console.log(err);
+          Alert.alert(
+            'Error downloading your itinerary!',
+            'Do check your internet connection and try again.',
+            [{text: 'Close'}],
+          );
           setLoading(false);
         });
     }
@@ -119,25 +129,27 @@ const ItineraryDetails = ({navigation}) => {
         visible={loading}
         animationType={'none'}
       />
-      <Card>
+      <ItiCard>
         <Text style={globalStyles.paragraph}>
-          <Text style={{fontWeight: 'bold'}}>Itinerary Name:</Text>{' '}
+          <Text style={{fontWeight: 'bold'}}>Itinerary Name:</Text>
+          {'\n'}
           {navigation.getParam('itiName')}
         </Text>
         <Text style={globalStyles.paragraph}>
-          <Text style={{fontWeight: 'bold'}}>File Name:</Text>{' '}
+          <Text style={{fontWeight: 'bold'}}>File Name:</Text> {'\n'}
           {navigation.getParam('filename')}
         </Text>
         <Text style={globalStyles.paragraph}>
-          <Text style={{fontWeight: 'bold'}}>File Type:</Text>{' '}
+          <Text style={{fontWeight: 'bold'}}>File Type:</Text> {'\n'}
           {navigation.getParam('contentType')}
         </Text>
         <Text style={globalStyles.paragraph}>
-          <Text style={{fontWeight: 'bold'}}>Upload Date:</Text>{' '}
+          <Text style={{fontWeight: 'bold'}}>Upload Date:</Text> {'\n'}
           {navigation.getParam('uploadDate')}
         </Text>
         <Text style={globalStyles.paragraph}>
-          <Text style={{fontWeight: 'bold'}}>Itinerary Description:</Text>{' '}
+          <Text style={{fontWeight: 'bold'}}>Itinerary Description:</Text>
+          {'\n'}
           {navigation.getParam('des')}
         </Text>
         <View style={styles.bottom}>
@@ -146,14 +158,14 @@ const ItineraryDetails = ({navigation}) => {
             {navigation.getParam('author')}{' '}
           </Text>
         </View>
-      </Card>
+      </ItiCard>
       <FlatButton
-        style={{marginTop: 16, backgroundColor: '#a5d1e3'}}
+        style={{marginTop: 16, backgroundColor: '#b9cfe3'}}
         text="View"
         onPress={() => openFile()}
       />
       <FlatButton
-        style={{marginTop: 16, backgroundColor: '#3a7c91'}}
+        style={{marginTop: 16}}
         text="Download"
         onPress={() => downloadPermFile()}
       />

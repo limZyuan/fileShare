@@ -22,8 +22,14 @@ const screens = {
 
 const UploadStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
-    headerTintColor: '#444',
-    headerStyle: {backgroundColor: '#eee', height: 100},
+    headerTintColor: '#fff',
+    headerStyle: {
+      backgroundColor: '#fff',
+      height: 70,
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomWidth: 0,
+    },
   },
 });
 

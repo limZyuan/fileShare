@@ -79,6 +79,9 @@ const Upload = () => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ScrollView style={globalStyles.container}>
+        <Text style={globalStyles.uploadText}>
+          Let's contribute back to the community by sharing our own itineraries!
+        </Text>
         <Formik
           initialValues={{
             name: '',

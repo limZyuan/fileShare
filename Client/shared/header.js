@@ -17,17 +17,15 @@ const styles = StyleSheet.create({
     height: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    marginTop: 10,
   },
   headerText: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 30,
     color: '#333',
     letterSpacing: 1,
-  },
-  icon: {
-    position: 'absolute',
-    left: 16,
+    fontFamily: 'nunito-bold',
   },
   headerTitle: {
     flexDirection: 'row',

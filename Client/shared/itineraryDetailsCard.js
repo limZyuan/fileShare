@@ -1,16 +1,16 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
-const Card = (props) => {
+const ItineraryDetailsCard = (props) => {
   return (
-    <View style={styles.card}>
-      <View style={styles.cardContent}>{props.children}</View>
+    <View style={styles.itineraryCard}>
+      <View style={styles.itineraryCardContent}>{props.children}</View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
+  itineraryCard: {
     borderRadius: 6,
     elevation: 3,
     backgroundColor: '#f5f7f9',
@@ -24,11 +24,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     marginVertical: 6,
   },
-  cardContent: {
+  itineraryCardContent: {
     marginHorizontal: 10,
     marginVertical: 12,
-    flexDirection: 'row',
   },
 });
 
-export default Card;
+export default ItineraryDetailsCard;

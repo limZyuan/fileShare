@@ -22,19 +22,22 @@ const RootBottomNavigator = createBottomTabNavigator(
         let iconColor = '';
         if (routeName === 'Itineraries') {
           iconName = 'search';
-          iconColor = focused ? '#3a7c91' : '#b7b7b7';
+          iconColor = focused ? '#3695fb' : '#b7b7b7';
         } else if (routeName === 'Upload') {
           iconName = 'upload';
-          iconColor = focused ? '#3a7c91' : '#b7b7b7';
+          iconColor = focused ? '#3695fb' : '#b7b7b7';
         }
 
         // You can return any component that you like here!
-        return <Icon name={iconName} size={25} color={iconColor} />;
+        return <Icon name={iconName} size={20} color={iconColor} />;
       },
     }),
     tabBarOptions: {
-      activeTintColor: '#3a7c91',
+      activeTintColor: '#3695fb',
       inactiveTintColor: '#b7b7b7',
+      style: {
+        height: 50,
+      },
     },
   },
 );

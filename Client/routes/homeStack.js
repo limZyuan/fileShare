@@ -13,10 +13,13 @@ const screens = {
     screen: Home,
     navigationOptions: ({navigation}) => {
       return {
-        headerTitle: () => (
-          <Header navigation={navigation} title="Itineraries" />
-        ),
-        // headerStyle: {height: 70},
+        headerTitle: () => <Header navigation={navigation} title="Explore" />,
+        headerStyle: {
+          height: 70,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
       };
     },
   },
@@ -24,6 +27,12 @@ const screens = {
     screen: ItineraryDetails,
     navigationOptions: {
       title: 'Itinerary Details',
+      headerStyle: {
+        height: 70,
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+      },
     },
   },
 };

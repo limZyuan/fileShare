@@ -1,9 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {globalStyles} from '../styles/global';
 import Card from '../shared/card';
 import {getAllFiles} from '../functions/dbConnect';
 import ModalCustom from '../shared/modal';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Home = ({navigation}) => {
   // store the full set of db data
@@ -64,21 +72,41 @@ const Home = ({navigation}) => {
         visible={loading}
         animationType={'none'}
       />
-      <TextInput
-        style={globalStyles.searchBar}
-        onChangeText={(search) => setSearch(search)}
-        onSubmitEditing={filterIti}
-        placeholder="Search for itineraries"
-        returnKeyType="search"
-        autoCorrect={true}
-      />
+      <View style={globalStyles.searchWrap}>
+        <Icon name={'search'} size={25} color={'#bbb'} />
+        <TextInput
+          style={globalStyles.searchBar}
+          onChangeText={(search) => setSearch(search)}
+          onSubmitEditing={filterIti}
+          placeholder="Search for Itineraries"
+          selectionColor="#5ca9fb"
+          returnKeyType="search"
+          autoCorrect={true}
+        />
+      </View>
       <FlatList
         data={itineraries}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <TouchableOpacity
             onPress={() => navigation.navigate('ItineraryDetails', item)}>
             <Card>
-              <Text style={globalStyles.titleText}>{item.itiName}</Text>
+              <Image
+                style={globalStyles.image}
+                source={{
+                  uri: `https://source.unsplash.com/100x100/?travel,${index}`,
+                }}
+              />
+              <Text style={globalStyles.titleText}>
+                <Text style={{fontWeight: '700', fontSize: 17}}>
+                  {item.itiName.length > 33
+                    ? item.itiName.substring(0, 33 - 3) + '...'
+                    : item.itiName}
+                </Text>
+                {'\n'}
+                <Text style={{color: '#a0a0a0', fontSize: 13}}>
+                  {item.author}
+                </Text>
+              </Text>
             </Card>
           </TouchableOpacity>
         )}
